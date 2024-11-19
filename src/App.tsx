@@ -1,38 +1,47 @@
-import './assets/css/App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import {} from 'react-router-dom';
-import AuthLayout from './layouts/auth';
-import AdminLayout from './layouts/admin';
-import RTLLayout from './layouts/rtl';
-import {
-  ChakraProvider,
-  // extendTheme
-} from '@chakra-ui/react';
-import initialTheme from './theme/theme'; //  { themeGreen }
-import { useState } from 'react';
-// Chakra imports
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard';
+import BodyguardsList from './pages/BodyguardsList';
+import BodyguardDetails from './pages/BodyguardDetails';
+import ClientsList from './pages/ClientsList';
+import ClientDetails from './pages/ClientDetails';
+import KycVerification from './pages/KycVerification';
+import KycVerificationDetails from './pages/KycVerificationDetails';
+import Support from './pages/Support';
+import SupportTicketDetails from './pages/SupportTicketDetails';
+import Payments from './pages/Payments';
+import PaymentDetails from './pages/PaymentDetails';
+import AuditLogs from './pages/AuditLogs';
+import AuditLogDetails from './pages/AuditLogDetails';
+import Settings from './pages/Settings';
 
-export default function Main() {
-  // eslint-disable-next-line
-  const [currentTheme, setCurrentTheme] = useState(initialTheme);
+function App() {
   return (
-    <ChakraProvider theme={currentTheme}>
-      <Routes>
-        <Route path="auth/*" element={<AuthLayout />} />
-        <Route
-          path="admin/*"
-          element={
-            <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
-          }
-        />
-        <Route
-          path="rtl/*"
-          element={
-            <RTLLayout theme={currentTheme} setTheme={setCurrentTheme} />
-          }
-        />
-        <Route path="/" element={<Navigate to="/admin" replace />} />
-      </Routes>
-    </ChakraProvider>
+    <Router>
+      <div className="flex min-h-screen bg-gray-100">
+        <Sidebar />
+        <main className="flex-1 ml-64 overflow-auto">
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/bodyguards" element={<BodyguardsList />} />
+            <Route path="/bodyguards/:id" element={<BodyguardDetails />} />
+            <Route path="/clients" element={<ClientsList />} />
+            <Route path="/clients/:id" element={<ClientDetails />} />
+            <Route path="/verification" element={<KycVerification />} />
+            <Route path="/verification/:id" element={<KycVerificationDetails />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/support/:id" element={<SupportTicketDetails />} />
+            <Route path="/payments" element={<Payments />} />
+            <Route path="/payments/:id" element={<PaymentDetails />} />
+            <Route path="/audit" element={<AuditLogs />} />
+            <Route path="/audit/:id" element={<AuditLogDetails />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
+
+export default App;
