@@ -1,48 +1,51 @@
-import React from 'react';
-import { FileCheck, Search } from 'lucide-react';
-import PageHeader from '../components/PageHeader';
-import DataTable from '../components/DataTable';
-import StatusBadge from '../components/StatusBadge';
+import React, { useEffect } from "react";
+import { FileCheck, Search } from "lucide-react";
+import PageHeader from "../components/PageHeader";
+import DataTable from "../components/DataTable";
+import StatusBadge from "../components/StatusBadge";
+import { useNavigate } from "react-router-dom";
+import { getPendingKyc } from "../services/api.service";
 
 interface KycRequest {
   id: string;
   bodyguardName: string;
   documentType: string;
   submissionDate: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: "pending" | "approved" | "rejected";
 }
 
 const mockKycRequests: KycRequest[] = [
   {
-    id: '1',
-    bodyguardName: 'John Doe',
-    documentType: 'ID Verification',
-    submissionDate: '2024-03-10',
-    status: 'pending',
+    id: "1",
+    bodyguardName: "John Doe",
+    documentType: "ID Verification",
+    submissionDate: "2024-03-10",
+    status: "pending",
   },
   // Add more mock data as needed
 ];
 
 const columns = [
-  { key: 'bodyguardName', label: 'Bodyguard Name' },
-  { key: 'documentType', label: 'Document Type' },
+  { key: "firstName", label: "Name" },
+  { key: "lastName", label: "Name" },
+  { key: "email", label: "Email Address" },
   {
-    key: 'submissionDate',
-    label: 'Submission Date',
+    key: "createdAt",
+    label: "Submission Date",
     render: (date: string) => new Date(date).toLocaleDateString(),
   },
   {
-    key: 'status',
-    label: 'Status',
+    key: "status",
+    label: "Status",
     render: (status: string) => (
       <StatusBadge
         status={status}
         variant={
-          status === 'approved'
-            ? 'success'
-            : status === 'pending'
-            ? 'warning'
-            : 'error'
+          status === "approved"
+            ? "success"
+            : status === "pending"
+            ? "warning"
+            : "error"
         }
       />
     ),
@@ -50,6 +53,19 @@ const columns = [
 ];
 
 const KycVerification = () => {
+  const navigate = useNavigate();
+  const [kycs, setKycs] = React.useState([]);
+  const gotodetails = (id: any) => navigate(`/verification/${id}`);
+  useEffect(() => {
+    getKycs();
+  }, []);
+
+  const getKycs = async () => {
+    const res = await getPendingKyc();
+    console.log(res);
+    setKycs(res); // Fetch stats from API
+    // Fetch stats from API
+  };
   return (
     <div className="p-6">
       <PageHeader
@@ -57,7 +73,7 @@ const KycVerification = () => {
         icon={FileCheck}
         actions={
           <div className="flex space-x-4">
-            <div className="relative">
+            <div className="relative hidden">
               <input
                 type="text"
                 placeholder="Search verifications..."
@@ -72,8 +88,11 @@ const KycVerification = () => {
       <div className="bg-white rounded-lg shadow-md">
         <DataTable
           columns={columns}
-          data={mockKycRequests}
-          onRowClick={(row) => console.log('Clicked row:', row)}
+          data={kycs}
+          onRowClick={(row) => {
+            localStorage.setItem("kyc", JSON.stringify(row));
+            gotodetails(row.id)
+          }}
         />
       </div>
     </div>

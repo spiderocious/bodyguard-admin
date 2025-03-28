@@ -18,7 +18,7 @@ const ClientDetails = () => {
     location: 'Los Angeles, USA',
     joinedDate: '2024-01-15',
     totalBookings: 12,
-    totalSpent: '$3,600',
+    totalSpent: 'NGN 3,600',
     lastBooking: '2024-03-10',
     profilePhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
   };

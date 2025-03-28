@@ -16,7 +16,7 @@ const SupportTicketDetails = () => {
     priority: 'high',
     createdAt: '2024-03-15T10:30:00Z',
     user: {
-      name: 'Alice Johnson',
+      name: 'Feranmi Johnson',
       type: 'client',
       email: 'alice.j@example.com',
     },
@@ -24,7 +24,7 @@ const SupportTicketDetails = () => {
     messages: [
       {
         id: 1,
-        sender: 'Alice Johnson',
+        sender: 'Feranmi Johnson',
         role: 'client',
         message: 'I was charged twice for my recent booking (ID: BK123). Please help resolve this issue.',
         timestamp: '2024-03-15T10:30:00Z',
@@ -38,7 +38,7 @@ const SupportTicketDetails = () => {
       },
       {
         id: 3,
-        sender: 'Alice Johnson',
+        sender: 'Feranmi Johnson',
         role: 'client',
         message: 'Sure, the transaction IDs are: TX123 and TX124',
         timestamp: '2024-03-15T10:40:00Z',

@@ -1,53 +1,47 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { FileCheck, AlertCircle } from 'lucide-react';
-import PageHeader from '../components/PageHeader';
-import Modal from '../components/Modal';
+import { AlertCircle, FileCheck } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Modal from "../components/Modal";
+import PageHeader from "../components/PageHeader";
+import { actPendingKyc } from "../services/api.service";
+import CustomNetworkImage from "../components/custom-network-image";
 
 const KycVerificationDetails = () => {
   const { id } = useParams();
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showApproveModal, setShowApproveModal] = useState(false);
-  const [rejectionReason, setRejectionReason] = useState('');
+  const [rejectionReason, setRejectionReason] = useState("");
+  const [verification, setVerification] = useState<any>(null);
+  const navigate = useNavigate();
+  console.log(verification);
+  useEffect(() => {
+    const v = localStorage.getItem("kyc");
+    if (v) {
+      setVerification(JSON.parse(v));
+    }
+  }, []);
 
-  // Mock data
-  const verification = {
-    id,
-    bodyguardName: 'John Doe',
-    submissionDate: '2024-03-10',
-    status: 'pending',
-    documents: [
-      {
-        type: 'ID Card',
-        frontUrl: 'https://images.unsplash.com/photo-1516571748831-5d81767b044d',
-        backUrl: 'https://images.unsplash.com/photo-1516571748831-5d81767b044d',
-      },
-      {
-        type: 'Professional License',
-        url: 'https://images.unsplash.com/photo-1516571748831-5d81767b044d',
-      },
-      {
-        type: 'Training Certificate',
-        url: 'https://images.unsplash.com/photo-1516571748831-5d81767b044d',
-      },
-    ],
-    personalInfo: {
-      dateOfBirth: '1990-05-15',
-      nationality: 'American',
-      address: '123 Security St, NY 10001',
-      phone: '+1 234-567-8900',
-      email: 'john.doe@example.com',
-    },
-  };
 
   const handleApprove = () => {
-    console.log('Approving verification');
-    setShowApproveModal(false);
+    console.log("Approving verification");
+    //setShowApproveModal(false);
+    submitAction(true);
   };
 
   const handleReject = () => {
-    console.log('Rejecting verification with reason:', rejectionReason);
-    setShowRejectModal(false);
+    console.log("Rejecting verification with reason:", rejectionReason);
+    //setShowRejectModal(false);
+    submitAction(false);
+  };
+
+  const submitAction = async (status: boolean) => {
+    const res = await actPendingKyc(verification?.id, status);
+    console.log(res);
+    if (res) {
+      setShowApproveModal(false);
+      setShowRejectModal(false);
+      navigate("/kycs");
+    }
   };
 
   return (
@@ -80,24 +74,41 @@ const KycVerificationDetails = () => {
             <div className="space-y-4">
               <div>
                 <label className="text-sm text-gray-500">Full Name</label>
-                <p className="font-medium">{verification.bodyguardName}</p>
+                <p className="font-medium">
+                  {verification?.firstName} {verification?.lastName}
+                </p>
               </div>
               <div>
                 <label className="text-sm text-gray-500">Date of Birth</label>
-                <p className="font-medium">{verification.personalInfo.dateOfBirth}</p>
-              </div>
-              <div>
-                <label className="text-sm text-gray-500">Nationality</label>
-                <p className="font-medium">{verification.personalInfo.nationality}</p>
+                <p className="font-medium">{verification?.kyc.dob}</p>
               </div>
               <div>
                 <label className="text-sm text-gray-500">Address</label>
-                <p className="font-medium">{verification.personalInfo.address}</p>
+                <p className="font-medium">
+                  {verification?.kyc?.address?.address}
+                  {verification?.kyc?.address?.city}
+                  {verification?.kyc?.address?.state}
+                </p>
               </div>
               <div>
-                <label className="text-sm text-gray-500">Contact</label>
-                <p className="font-medium">{verification.personalInfo.phone}</p>
-                <p className="font-medium">{verification.personalInfo.email}</p>
+                <label className="text-sm text-gray-500">Gender</label>
+                <p className="font-medium uppercase">{verification?.gender}</p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-500">Measurements</label>
+                <p className="font-medium">
+                  Weight: {verification?.kyc?.body?.weight} kg{" "}
+                </p>
+                <p className="font-medium">
+                  Height: {verification?.kyc?.body?.height} cm{" "}
+                </p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-500">Experience</label>
+                <p className="font-medium">
+                  {verification?.kyc?.experience?.value}{" "}
+                  {verification?.kyc?.experience?.unit}
+                </p>
               </div>
             </div>
           </div>
@@ -107,34 +118,25 @@ const KycVerificationDetails = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold mb-4">Submitted Documents</h3>
             <div className="space-y-6">
-              {verification.documents.map((doc) => (
-                <div key={doc.type} className="space-y-2">
-                  <h4 className="font-medium">{doc.type}</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    {doc.frontUrl && (
-                      <img
-                        src={doc.frontUrl}
-                        alt={`${doc.type} Front`}
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                    )}
-                    {doc.backUrl && (
-                      <img
-                        src={doc.backUrl}
-                        alt={`${doc.type} Back`}
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                    )}
-                    {doc.url && (
-                      <img
-                        src={doc.url}
-                        alt={doc.type}
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                    )}
-                  </div>
-                </div>
-              ))}
+              <h4 className="font-medium uppercase">
+                ID Type: {verification?.kyc?.identity?.idProofType}
+              </h4>
+              <div className="grid grid-cols-2 gap-4">
+                {verification?.kyc?.identity?.idProof && (
+                  <CustomNetworkImage
+                    fileKey={verification?.kyc?.identity?.idProof}
+                    className="w-full h-48 object-cover rounded-lg"
+                    showViewIcon
+                  />
+                )}
+                {verification?.kyc?.identity?.idProofBack && (
+                  <CustomNetworkImage
+                    fileKey={verification?.kyc?.identity?.idProofBack}
+                    className="w-full h-48 object-cover rounded-lg"
+                    showViewIcon
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -164,7 +166,7 @@ const KycVerificationDetails = () => {
         <div className="space-y-4">
           <div className="flex items-start space-x-2 text-yellow-600">
             <AlertCircle className="mt-1" size={20} />
-            <p>Please provide a reason for rejecting this verification.</p>
+            <p>Please provide a reason for rejecting this verification?.</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

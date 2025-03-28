@@ -4,6 +4,7 @@ import { LucideIcon } from 'lucide-react';
 interface StatCardProps {
   title: string;
   value: string | number;
+  isAmount?: boolean;
   icon: LucideIcon;
   trend?: {
     value: number;
@@ -11,13 +12,16 @@ interface StatCardProps {
   };
 }
 
-const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, trend }) => {
+const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, trend, isAmount = false }) => {
   return (
     <div className="bg-white rounded-xl p-6 shadow-lg">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-gray-500 text-sm">{title}</p>
-          <h3 className="text-2xl font-bold mt-1">{value}</h3>
+          <h3 className="text-2xl font-bold mt-1">
+            {isAmount && <>&#8358;</>} 
+            {" "}
+            {value}</h3>
           {trend && (
             <p className={`text-sm mt-2 ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
               {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}% from last month

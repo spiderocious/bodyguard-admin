@@ -1,14 +1,125 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
 import PageHeader from '../components/PageHeader';
-
+import ConfigEditor from './ConfigEditor';
 const Settings = () => {
+  const [config, setConfig] = React.useState<any>({});
+  const [loading, setLoading] = React.useState(true);
+  const handleSaveConfig = (config: string) => {
+
+  }
+  useEffect(() => {
+    // Fetch config from API
+    // setConfig(response.data)
+    getConfig();
+  }, []);
+  const getConfig = async () => { }
   return (
     <div className="p-6">
       <PageHeader title="Settings" icon={SettingsIcon} />
 
-      <div className="grid grid-cols-1 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="grid grid-cols-1 gap-6 bg-white">
+        <ConfigEditor appConfig={{
+          "id": "config2ee5bd317371183082587501660346",
+          "staleIn": "2025-01-17T12:52:31.590Z",
+          "service_urls": {
+            "user_service": "http://localhost:6000",
+            "job_service": "http://localhost:6045"
+          },
+          "bookings": {
+            "returnFeesIfAllDeclined": true,
+            "showCancelButtonMinutes": 20,
+            "clientCancellationFee": 100,
+            "percentageCompletion": 0.5,
+            "bodyguardCancellationFee": 100,
+            "cancellationMinimumHours": 1,
+            "minimumBookingHours": 1
+          },
+          "workRates": { "max": 100, "min": 20, "validateRate": true },
+          "allowedVersions": ["1.0.0", "1.0.1"],
+          "flags": {
+            "enabled": true,
+            "disabledMessage": "We are currently experiencing high traffic. Please try again later.",
+            "withdrawals": true,
+            "minimumWithdrawalAmount": 100,
+            "funding": true,
+            "forceLogin": false,
+            "minimumBodyguardAge": 18,
+            "minimumClientAge": 15,
+            "uploadURL": "http://localhost:6050/file/v1/files/upload",
+            "allowedIDs": [
+              {
+                "name": "Passport",
+                "key": "passport",
+                "requiresFrontAndBack": false,
+                "requiresIDNumber": true
+              }
+              // ... other IDs
+            ],
+            "serviceTypes": [
+              "Personal Bodyguard",
+              "Event Security Guard",
+              "Bouncer",
+              "Bodyguard Driver"
+            ],
+            "uniformTypes": ["Formal Suit", "Tactical Uniform", "Business Casuals"],
+            "addonItems": ["Bulletproof vests or body armor", "Tactical boots", "Beret"]
+          },
+          "introPage": {
+            "title": [
+              "TESING CHANGABLE TEXT",
+              "CHOOSE YOUR ASSIGNMENTS",
+              "NEVER MISS AN OPPORTUNITY"
+            ],
+            "subtitle": [
+              "Choose assignments that match your availability and preferences.",
+              "Receive instant notifications when new job requests are posted.",
+              "View upcoming assignments, manage your schedule, and track payments all in one place."
+            ]
+          },
+          "payments": {
+            "hireFee": 200,
+            "deductFromBodyguard": false,
+            "usePercentage": true,
+            "percentage": 0.5,
+            "maxFee": 200,
+            "minFee": 5
+          },
+          "allowedRoles": [
+            {
+              "key": "client",
+              "title": "Hire a Bodyguard",
+              "description": "I need to hire security services"
+            },
+            {
+              "key": "bodyguard",
+              "title": "Become a Bodyguard",
+              "description": "I'm offering security services"
+            }
+          ],
+          "welcomePage": {
+            "title": "Welcome to",
+            "appName": "Luxe",
+            "subtitle": "Connecting Professionals to High-Value Clients",
+            "footer": "Service provided by Luxe"
+          },
+          "allowedStates": [
+            { "name": "Lagos", "code": "lagos" },
+            { "name": "Abuja", "code": "abuja" },
+            { "name": "Oyo", "code": "oyo" }
+          ],
+          "measurements": {
+            "maxWeight": 150,
+            "minWeight": 65,
+            "maxHeight": 200,
+            "minHeight": 150
+          }
+        }}
+          saveConfig={handleSaveConfig}
+        
+        />
+        
+        <div className="bg-white hidden rounded-lg shadow-md p-6">
           <h2 className="text-lg font-semibold mb-4">Application Settings</h2>
           <div className="space-y-4">
             <div>
@@ -29,7 +140,7 @@ const Settings = () => {
               <input
                 type="number"
                 className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                defaultValue={4}
+                defaultValue={3}
               />
             </div>
 
@@ -40,7 +151,7 @@ const Settings = () => {
               <input
                 type="number"
                 className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                defaultValue={72}
+                defaultValue={24}
               />
             </div>
           </div>
@@ -84,25 +195,7 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-lg font-semibold mb-4">API Settings</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                API Key
-              </label>
-              <div className="flex space-x-2">
-                <input
-                  type="password"
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value="sk_test_123456789"
-                  readOnly
-                />
-                <button className="btn btn-secondary">Regenerate</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    
       </div>
     </div>
   );
