@@ -82,8 +82,8 @@ const Settings = () => {
             "deductFromBodyguard": false,
             "usePercentage": true,
             "percentage": 0.5,
-            "maxFee": 200,
-            "minFee": 5
+            "maxFee": 20000,
+            "minFee": 5000
           },
           "allowedRoles": [
             {
