@@ -1,15 +1,11 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Shield, 
-  Users, 
-  FileCheck, 
-  HeadphonesIcon, 
-  DollarSign,
-  History,
-  Settings
+import {
+  FileCheck,
+  LayoutDashboard,
+  Settings,
+  Shield,
+  Users
 } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
   const navItems = [
@@ -17,7 +13,7 @@ const Sidebar = () => {
     { path: '/bodyguards', icon: Shield, label: 'Bodyguards' },
     { path: '/clients', icon: Users, label: 'Clients' },
     { path: '/jobs', icon: Shield, label: 'Jobs' },
-    { path: '/verification', icon: FileCheck, label: 'KYC Verification' },
+    { path: '/verification', icon: FileCheck, label: 'Verifications' },
     // { path: '/support', icon: HeadphonesIcon, label: 'Support' },
     // { path: '/payments', icon: DollarSign, label: 'Payments' },
     // { path: '/audit', icon: History, label: 'Audit Logs' },

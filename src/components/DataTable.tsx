@@ -37,7 +37,7 @@ const DataTable: React.FC<DataTableProps> = ({ columns, data, onRowClick }) => {
             >
               {columns.map((column) => (
                 <td key={column.key} className="px-6 py-4 whitespace-nowrap">
-                  {column.render ? column.render(row[column.key]) : row[column.key]}
+                  {column.render ? column.render(row) : row[column.key]}
                 </td>
               ))}
             </tr>

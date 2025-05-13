@@ -19,6 +19,7 @@ import JobsList from './pages/JobList';
 import JobDetailsPage from './pages/JobDetails';
 import Login from './pages/Login';
 import { isUserLoggedIn } from './services/api.service';
+import PhysicalVerification from './pages/PhysicalVerification';
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = isUserLoggedIn(); 
@@ -91,9 +92,10 @@ function App() {
         } />
         <Route path="/verification" element={
           <ProtectedLayout>
-            <KycVerification />
+            <PhysicalVerification />
           </ProtectedLayout>
         } />
+        
         <Route path="/verification/:id" element={
           <ProtectedLayout>
             <KycVerificationDetails />

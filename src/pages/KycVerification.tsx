@@ -14,16 +14,6 @@ interface KycRequest {
   status: "pending" | "approved" | "rejected";
 }
 
-const mockKycRequests: KycRequest[] = [
-  {
-    id: "1",
-    bodyguardName: "John Doe",
-    documentType: "ID Verification",
-    submissionDate: "2024-03-10",
-    status: "pending",
-  },
-  // Add more mock data as needed
-];
 
 const columns = [
   { key: "firstName", label: "Name" },
